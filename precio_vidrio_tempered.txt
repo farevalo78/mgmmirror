@@ -1,0 +1,20 @@
+Grosor	type	Annealed 	temper	polish
+1/4	Clear	3.3	4.4	0.3
+1/4	Mirror	7.25	0	0.3
+1/4	Pilkington energy	7	9.85	0.3
+1/4	bronze	6.25	8.6	0.3
+1/4	green	6.25	8.65	0.3
+1/4	grey	6.25	8.65	0.3
+1/4	low iron	9.95	12	0.3
+1/4	acid etch	7.5	9.8	0.3
+3/8	clear	6.5	8.25	0.15
+3/8	low iron	13.75	15	0.15
+3/8	acid etch	16	19.1	0.15
+3/8	acid etch low iron	0	24.25	0.15
+3/8	shower guard	0	17.5	0.15
+3/8	low iron shower guard	0	21	0.15
+1/2	clear	7.85	10.3	0.17
+1/2	acid etch	19.25	22.85	0.17
+1/2	acid etch low iron	0	28.5	0.17
+1/2	low iron	15.85	17.3	0.17
+1/2	shower guard	0	20.75	0.17
