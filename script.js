@@ -33,7 +33,7 @@ function startPanelMeasurements() {
     const glassThickness = document.getElementById('glassThickness').value;
     const glassType = document.getElementById('glassType').value;
     
-    // Validar que todos los campos estén completos
+    // Validar que todos los campos estén completo
     if (!numPanels || !glassThickness || !glassType) {
         alert('Por favor completa todos los campos');
         return;
