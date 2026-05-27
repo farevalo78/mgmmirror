@@ -1,29 +1,31 @@
-// Tabla de precios de vidrio tempered
+// Tabla completa de precios de vidrio tempered
+// Estructura: grosor -> tipo -> temper (precio)
+
 const priceDatabase = {
     "1/4": {
         "Clear": 4.4,
         "Mirror": 0,
         "Pilkington energy": 9.85,
-        "bronze": 8.6,
-        "green": 8.65,
-        "grey": 8.65,
-        "low iron": 12,
-        "acid etch": 9.8
+        "Bronze": 8.6,
+        "Green": 8.65,
+        "Grey": 8.65,
+        "Low iron": 12,
+        "Acid etch": 9.8
     },
     "3/8": {
-        "clear": 8.25,
-        "low iron": 15,
-        "acid etch": 19.1,
-        "acid etch low iron": 24.25,
-        "shower guard": 17.5,
-        "low iron shower guard": 21
+        "Clear": 8.25,
+        "Low iron": 15,
+        "Acid etch": 19.1,
+        "Acid etch low iron": 24.25,
+        "Shower guard": 17.5,
+        "Low iron shower guard": 21
     },
     "1/2": {
-        "clear": 10.3,
-        "acid etch": 22.85,
-        "acid etch low iron": 28.5,
-        "low iron": 17.3,
-        "shower guard": 20.75
+        "Clear": 10.3,
+        "Acid etch": 22.85,
+        "Acid etch low iron": 28.5,
+        "Low iron": 17.3,
+        "Shower guard": 20.75
     }
 };
 
@@ -35,7 +37,12 @@ function getGlassTypesByThickness(thickness) {
     return Object.keys(priceDatabase[thickness]).sort();
 }
 
-// Actualizar opciones de tipo de vidrio
+// Obtener precio temper para un tipo y grosor específico
+function getTemperPrice(thickness, type) {
+    return priceDatabase[thickness]?.[type] || 0;
+}
+
+// Actualizar opciones de tipo de vidrio en el formulario
 function updateGlassTypes() {
     const thickness = document.getElementById('glassThickness').value;
     const glassTypeSelect = document.getElementById('glassType');
@@ -47,7 +54,7 @@ function updateGlassTypes() {
         types.forEach(type => {
             const option = document.createElement('option');
             option.value = type;
-            option.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+            option.textContent = type;
             glassTypeSelect.appendChild(option);
         });
     }
