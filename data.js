@@ -1,6 +1,13 @@
-// Tabla completa de precios de vidrio tempered
-// Estructura: grosor -> tipo -> temper (precio)
+// Precios de hardware para Shower Door
+const hardwarePrices = {
+    clamps: 20,
+    brackets: 28,
+    orificios: 14,
+    hinges: 40,
+    cortes: 100
+};
 
+// Tabla de precios de vidrio tempered para Shower Door
 const priceDatabase = {
     "1/4": {
         "Clear": 4.4,
@@ -28,34 +35,3 @@ const priceDatabase = {
         "Shower guard": 20.75
     }
 };
-
-// Obtener tipos de vidrio disponibles por grosor
-function getGlassTypesByThickness(thickness) {
-    if (!thickness || !priceDatabase[thickness]) {
-        return [];
-    }
-    return Object.keys(priceDatabase[thickness]).sort();
-}
-
-// Obtener precio temper para un tipo y grosor específico
-function getTemperPrice(thickness, type) {
-    return priceDatabase[thickness]?.[type] || 0;
-}
-
-// Actualizar opciones de tipo de vidrio en el formulario
-function updateGlassTypes() {
-    const thickness = document.getElementById('glassThickness').value;
-    const glassTypeSelect = document.getElementById('glassType');
-    
-    glassTypeSelect.innerHTML = '<option value="">Seleccione tipo</option>';
-    
-    if (thickness) {
-        const types = getGlassTypesByThickness(thickness);
-        types.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type;
-            option.textContent = type;
-            glassTypeSelect.appendChild(option);
-        });
-    }
-}
