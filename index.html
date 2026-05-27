@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador de Vidrio Tempered - MGM Mirror</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" id="app">
+        <!-- Página Principal -->
+        <div id="mainPage" class="page active">
+            <div class="header">
+                <h1>🪟 MGM Mirror</h1>
+                <p>Cotizador Profesional de Vidrio Tempered</p>
+            </div>
+            
+            <div class="options-grid">
+                <div class="option-card" onclick="navigateTo('showerDoor')">
+                    <span class="option-icon">🚿</span>
+                    <h2>Shower Door</h2>
+                    <p>Puertas de ducha personalizadas con vidrio tempered</p>
+                </div>
+                
+                <div class="option-card" onclick="navigateTo('windowVinyl')">
+                    <span class="option-icon">🪟</span>
+                    <h2>Window Vinyl</h2>
+                    <p>Vinilo premium para ventanas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página Shower Door - Información Básica -->
+        <div id="showerDoorPage" class="page">
+            <div class="header">
+                <button class="back-btn" onclick="navigateTo('main')">← Atrás</button>
+                <h1>Cotizar Shower Door</h1>
+                <p>Ingrese la información para obtener su cotización</p>
+            </div>
+            
+            <form class="form-container" id="showerDoorForm">
+                <div class="form-group">
+                    <label for="numPanels">¿Cuántos paneles necesita?</label>
+                    <select id="numPanels" onchange="updateGlassTypes()" required>
+                        <option value="">Seleccione cantidad</option>
+                        <option value="1">1 Panel</option>
+                        <option value="2">2 Paneles</option>
+                        <option value="3">3 Paneles</option>
+                        <option value="4">4 Paneles</option>
+                        <option value="5">5 Paneles</option>
+                        <option value="6">6 Paneles</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="glassThickness">¿Qué grosor de vidrio?</label>
+                    <select id="glassThickness" onchange="updateGlassTypes()" required>
+                        <option value="">Seleccione grosor</option>
+                        <option value="1/4">1/4"</option>
+                        <option value="3/8">3/8"</option>
+                        <option value="1/2">1/2"</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="glassType">¿Qué tipo de vidrio?</label>
+                    <select id="glassType" required>
+                        <option value="">Seleccione tipo</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-primary" onclick="startPanelMeasurements()">Continuar →</button>
+            </form>
+        </div>
+
+        <!-- Página de Medidas de Paneles -->
+        <div id="panelMeasurementsPage" class="page">
+            <div class="header">
+                <button class="back-btn" onclick="navigateTo('showerDoor')">← Atrás</button>
+                <h1>Medidas de Paneles</h1>
+                <p>Ingrese las medidas en pulgadas</p>
+            </div>
+            
+            <div class="panels-container">
+                <div id="panelFormsContainer"></div>
+            </div>
+            
+            <div class="form-container" style="max-width: 700px; padding: 30px;">
+                <button type="button" class="btn-primary" onclick="calculateQuote()">Calcular Cotización →</button>
+            </div>
+        </div>
+
+        <!-- Página de Resultado -->
+        <div id="resultPage" class="page">
+            <div class="header">
+                <button class="back-btn" onclick="navigateTo('main')">← Inicio</button>
+                <h1>Su Cotización</h1>
+                <p>Detalles completos de su pedido</p>
+            </div>
+            
+            <div class="result-container">
+                <div id="resultDetails"></div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generatePDF()">📄 Descargar PDF</button>
+                    <button class="btn-secondary" onclick="navigateTo('main')">← Hacer Otra Cotización</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
