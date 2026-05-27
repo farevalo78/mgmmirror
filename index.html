@@ -25,7 +25,7 @@
                 <div class="option-card" onclick="navigateTo('windowVinyl')">
                     <span class="option-icon">🪟</span>
                     <h2>Window Vinyl</h2>
-                    <p>Vinilo premium para ventanas</p>
+                    <p>Ventanas con vinilo premium</p>
                 </div>
             </div>
         </div>
@@ -75,6 +75,60 @@
                 </div>
 
                 <button type="button" class="btn-primary" onclick="startPanelMeasurements()">Continuar →</button>
+            </form>
+        </div>
+
+        <!-- Página Window Vinyl -->
+        <div id="windowVinylPage" class="page">
+            <div class="header">
+                <button class="back-btn" onclick="navigateTo('main')">← Atrás</button>
+                <h1>Cotizar Window Vinyl</h1>
+                <p>Ingrese las especificaciones de su ventana</p>
+            </div>
+            
+            <form class="form-container" id="windowVinylForm">
+                <div class="form-group">
+                    <label for="vinylWidth">Ancho (pulgadas)</label>
+                    <input type="number" id="vinylWidth" placeholder="Ej: 36" min="1" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="vinylHeight">Alto (pulgadas)</label>
+                    <input type="number" id="vinylHeight" placeholder="Ej: 48" min="1" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="vinylGlassType">Tipo de Vidrio</label>
+                    <select id="vinylGlassType" required>
+                        <option value="">Seleccione tipo</option>
+                        <option value="Frosted">Frosted</option>
+                        <option value="Clear">Clear</option>
+                        <option value="Tempered">Tempered</option>
+                        <option value="Low-e">Low-e</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="vinylWindowType">Tipo de Ventana</label>
+                    <select id="vinylWindowType" required>
+                        <option value="">Seleccione tipo</option>
+                        <option value="Double Hang">Double Hang</option>
+                        <option value="Slider">Slider</option>
+                        <option value="Picture Window">Picture Window</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="vinylColor">Color</label>
+                    <select id="vinylColor" required>
+                        <option value="">Seleccione color</option>
+                        <option value="White">White</option>
+                        <option value="Bronze/Beige">Bronze/Beige</option>
+                        <option value="Black/White">Black/White</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn-primary" onclick="calculateWindowVinylQuote()">Calcular Cotización →</button>
             </form>
         </div>
 
@@ -138,6 +192,23 @@
                 <div id="resultDetails"></div>
                 <div class="button-group">
                     <button class="btn-primary" onclick="generatePDF()">📄 Descargar PDF</button>
+                    <button class="btn-secondary" onclick="navigateTo('main')">← Hacer Otra Cotización</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Resultado Window Vinyl -->
+        <div id="vinylResultPage" class="page">
+            <div class="header">
+                <button class="back-btn" onclick="navigateTo('main')">← Inicio</button>
+                <h1>Su Cotización Window Vinyl</h1>
+                <p>Detalles de su ventana</p>
+            </div>
+            
+            <div class="result-container">
+                <div id="vinylResultDetails"></div>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="generateVinylPDF()">📄 Descargar PDF</button>
                     <button class="btn-secondary" onclick="navigateTo('main')">← Hacer Otra Cotización</button>
                 </div>
             </div>

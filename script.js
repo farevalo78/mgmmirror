@@ -1,10 +1,39 @@
-// Precios de hardware
+// Precios de hardware para Shower Door
 const hardwarePrices = {
     clamps: 20,
     brackets: 28,
     orificios: 14,
     hinges: 40,
     cortes: 100
+};
+
+// Tabla de precios de vidrio tempered para Shower Door
+const priceDatabase = {
+    "1/4": {
+        "Clear": 4.4,
+        "Mirror": 0,
+        "Pilkington energy": 9.85,
+        "Bronze": 8.6,
+        "Green": 8.65,
+        "Grey": 8.65,
+        "Low iron": 12,
+        "Acid etch": 9.8
+    },
+    "3/8": {
+        "Clear": 8.25,
+        "Low iron": 15,
+        "Acid etch": 19.1,
+        "Acid etch low iron": 24.25,
+        "Shower guard": 17.5,
+        "Low iron shower guard": 21
+    },
+    "1/2": {
+        "Clear": 10.3,
+        "Acid etch": 22.85,
+        "Acid etch low iron": 28.5,
+        "Low iron": 17.3,
+        "Shower guard": 20.75
+    }
 };
 
 // Variables globales
@@ -23,7 +52,7 @@ function navigateTo(page) {
             updateGlassTypes();
             break;
         case 'windowVinyl':
-            alert('Función Window Vinyl - Próximamente disponible');
+            document.getElementById('windowVinylPage').classList.add('active');
             break;
         case 'panelMeasurements':
             document.getElementById('panelMeasurementsPage').classList.add('active');
@@ -34,10 +63,41 @@ function navigateTo(page) {
         case 'result':
             document.getElementById('resultPage').classList.add('active');
             break;
+        case 'vinylResult':
+            document.getElementById('vinylResultPage').classList.add('active');
+            break;
     }
 }
 
-// Iniciar medidas de paneles
+// Obtener tipos de vidrio para Shower Door
+function getGlassTypesByThickness(thickness) {
+    return Object.keys(priceDatabase[thickness] || {}).sort();
+}
+
+// Obtener precio temper
+function getTemperPrice(thickness, type) {
+    return priceDatabase[thickness]?.[type] || 0;
+}
+
+// Actualizar opciones de vidrio en Shower Door
+function updateGlassTypes() {
+    const thickness = document.getElementById('glassThickness').value;
+    const glassTypeSelect = document.getElementById('glassType');
+    
+    glassTypeSelect.innerHTML = '<option value="">Seleccione tipo</option>';
+    
+    if (thickness) {
+        const types = getGlassTypesByThickness(thickness);
+        types.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            glassTypeSelect.appendChild(option);
+        });
+    }
+}
+
+// Iniciar medidas de paneles (Shower Door)
 function startPanelMeasurements() {
     const projectName = document.getElementById('projectName').value;
     const numPanels = parseInt(document.getElementById('numPanels').value);
@@ -50,6 +110,7 @@ function startPanelMeasurements() {
     }
     
     currentData = {
+        type: 'showerDoor',
         projectName: projectName,
         numPanels: numPanels,
         glassThickness: glassThickness,
@@ -110,7 +171,6 @@ function startPanelMeasurements() {
 function goToAdditionalCosts() {
     const { numPanels } = currentData;
     
-    // Validar que todos los campos estén completos
     for (let i = 1; i <= numPanels; i++) {
         const length = document.getElementById(`length${i}`).value;
         const width = document.getElementById(`width${i}`).value;
@@ -121,7 +181,6 @@ function goToAdditionalCosts() {
         }
     }
     
-    // Guardar datos de hardware
     currentData.panels = [];
     for (let i = 1; i <= numPanels; i++) {
         const clamps = parseInt(document.getElementById(`clamps${i}`).value) || 0;
@@ -144,7 +203,7 @@ function goToAdditionalCosts() {
     navigateTo('additionalCosts');
 }
 
-// Calcular cotización final
+// Calcular cotización Shower Door
 function calculateQuote() {
     const percentageIncrease = parseFloat(document.getElementById('percentageIncrease').value) || 0;
     const hwValue = parseFloat(document.getElementById('hwValue').value) || 0;
@@ -198,19 +257,19 @@ function calculateQuote() {
             cortes: cortes,
             hardwarePrice: hardwarePrice.toFixed(2),
             subtotal: panelSubtotal.toFixed(2),
-            with13Percent: panelWith13Percent.toFixed(2)
+            with13Percent: Math.ceil(panelWith13Percent * 100) / 100
         });
     }
     
     // Subtotal antes de % adicional
-    const subtotalAllPanels = panelsDetails.reduce((sum, p) => sum + parseFloat(p.with13Percent), 0);
+    const subtotalAllPanels = panelsDetails.reduce((sum, p) => sum + p.with13Percent, 0);
     
     // Aplicar porcentaje adicional
-    const percentageAmount = subtotalAllPanels * (percentageIncrease / 100);
+    const percentageAmount = Math.ceil(subtotalAllPanels * (percentageIncrease / 100) * 100) / 100;
     const subtotalWithPercentage = subtotalAllPanels + percentageAmount;
     
     // Hardware con porcentaje
-    const hwWithPercentage = hwValue + (hwValue * (percentageIncrease / 100));
+    const hwWithPercentage = Math.ceil((hwValue + (hwValue * (percentageIncrease / 100))) * 100) / 100;
     
     // Total final
     const totalFinal = subtotalWithPercentage + hwWithPercentage + laborCost;
@@ -228,7 +287,7 @@ function calculateQuote() {
     displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, totalFinal);
 }
 
-// Mostrar resultados
+// Mostrar resultados Shower Door
 function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, totalFinal) {
     const resultDetails = document.getElementById('resultDetails');
     const { projectName, percentageIncrease } = currentData;
@@ -264,7 +323,7 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
                     </div>
                     <p style="margin-top: 10px;"><strong>Hardware Total:</strong> $${panel.hardwarePrice}</p>
                     <p style="margin-top: 10px; border-top: 1px solid #e0e0e0; padding-top: 10px;"><strong>Subtotal:</strong> $${panel.subtotal}</p>
-                    <p style="color: #667eea; font-weight: 700; font-size: 1.05em;"><strong>+ 13%:</strong> $${panel.with13Percent}</p>
+                    <p style="color: #667eea; font-weight: 700; font-size: 1.05em;"><strong>+ 13%:</strong> $${panel.with13Percent.toFixed(2)}</p>
                 </div>
             </div>
         `;
@@ -275,16 +334,16 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
         <div style="margin-top: 30px; border-top: 3px solid #667eea; padding-top: 30px;">
             <h3 style="color: #667eea; margin-bottom: 20px;">Resumen de Costos:</h3>
             <div class="panel-details">
-                <p><strong>Subtotal Vidrio + Hardware + 13%:</strong> $${subtotalAllPanels}</p>
-                <p><strong>Aumento ${percentageIncrease}%:</strong> $${percentageAmount}</p>
+                <p><strong>Subtotal Vidrio + Hardware + 13%:</strong> $${subtotalAllPanels.toFixed(2)}</p>
+                <p><strong>Aumento ${percentageIncrease}%:</strong> $${percentageAmount.toFixed(2)}</p>
                 <p style="border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;"><strong>Subtotal con Aumento:</strong> $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}</p>
                 
-                <p style="margin-top: 20px;"><strong>Hardware (HW): </strong> $${hwValue}</p>
-                <p><strong>Hardware con ${percentageIncrease}%:</strong> $${hwWithPercentage}</p>
+                <p style="margin-top: 20px;"><strong>Hardware (HW): </strong> $${hwValue.toFixed(2)}</p>
+                <p><strong>Hardware con ${percentageIncrease}%:</strong> $${hwWithPercentage.toFixed(2)}</p>
                 
-                <p style="margin-top: 20px; border-top: 2px solid #667eea; padding-top: 20px;"><strong>Mano de Obra (Labor):</strong> $${laborCost}</p>
+                <p style="margin-top: 20px; border-top: 2px solid #667eea; padding-top: 20px;"><strong>Mano de Obra (Labor):</strong> $${laborCost.toFixed(2)}</p>
                 
-                <p style="margin-top: 30px; font-size: 1.5em; color: #667eea; font-weight: 700; border-top: 3px solid #667eea; padding-top: 20px;">TOTAL FINAL: $${totalFinal}</p>
+                <p style="margin-top: 30px; font-size: 1.5em; color: #667eea; font-weight: 700; border-top: 3px solid #667eea; padding-top: 20px;">TOTAL FINAL: $${totalFinal.toFixed(2)}</p>
             </div>
         </div>
     `;
@@ -293,7 +352,124 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
     navigateTo('result');
 }
 
-// Generar PDF
+// Calcular cotización Window Vinyl
+function calculateWindowVinylQuote() {
+    const width = parseFloat(document.getElementById('vinylWidth').value);
+    const height = parseFloat(document.getElementById('vinylHeight').value);
+    const glassType = document.getElementById('vinylGlassType').value;
+    const windowType = document.getElementById('vinylWindowType').value;
+    const color = document.getElementById('vinylColor').value;
+    
+    if (!width || !height || !glassType || !windowType || !color) {
+        alert('Por favor completa todos los campos');
+        return;
+    }
+    
+    // Precios base por color
+    const colorPrices = {
+        'White': 0,
+        'Bronze/Beige': 22,
+        'Black/White': 40
+    };
+    
+    // Precios por tipo de vidrio
+    const glassPrices = {
+        'Frosted': 40,
+        'Clear': 0,
+        'Tempered': (width * height / 144) * 40,
+        'Low-e': 60
+    };
+    
+    let baseCost = 0;
+    const colorCost = colorPrices[color];
+    const glassCost = glassPrices[glassType];
+    
+    // Calcular según tipo de ventana
+    if (windowType === 'Double Hang') {
+        const sum = width + height;
+        if (sum <= 102) {
+            baseCost = 152;
+        } else {
+            const difference = sum - 102;
+            baseCost = 152 + (difference * 2.5);
+        }
+    } else if (windowType === 'Picture Window') {
+        const sum = width + height;
+        baseCost = sum * 1.75;
+    } else if (windowType === 'Slider') {
+        const sum = width + height;
+        if (sum <= 72) {
+            baseCost = 132;
+        } else {
+            const difference = sum - 72;
+            baseCost = 132 + (difference * 2.5);
+        }
+    }
+    
+    // Total antes de 18%
+    let totalBeforeTax = baseCost + colorCost + glassCost;
+    
+    // Aplicar 18% y redondear al superior
+    const totalWithTax = Math.ceil((totalBeforeTax * 1.18) * 100) / 100;
+    
+    // Precio de venta sin taxes (multiplicar por 2)
+    const salePrice = totalWithTax * 2;
+    
+    currentData = {
+        type: 'windowVinyl',
+        width: width.toFixed(2),
+        height: height.toFixed(2),
+        glassType: glassType,
+        windowType: windowType,
+        color: color,
+        baseCost: baseCost.toFixed(2),
+        colorCost: colorCost.toFixed(2),
+        glassCost: glassCost.toFixed(2),
+        totalBeforeTax: totalBeforeTax.toFixed(2),
+        totalWithTax: totalWithTax.toFixed(2),
+        salePrice: salePrice.toFixed(2)
+    };
+    
+    displayVinylResults();
+}
+
+// Mostrar resultados Window Vinyl
+function displayVinylResults() {
+    const vinylResultDetails = document.getElementById('vinylResultDetails');
+    const { width, height, glassType, windowType, color, baseCost, colorCost, glassCost, totalBeforeTax, totalWithTax, salePrice } = currentData;
+    
+    let html = `
+        <div style="margin-bottom: 30px;">
+            <h2 style="color: #333; margin-bottom: 20px; font-size: 1.8em;">Detalles de la Cotización Window Vinyl</h2>
+            <div class="panel-details">
+                <p><strong>Ancho:</strong> ${width}"</p>
+                <p><strong>Alto:</strong> ${height}"</p>
+                <p><strong>Tipo de Vidrio:</strong> ${glassType}</p>
+                <p><strong>Tipo de Ventana:</strong> ${windowType}</p>
+                <p><strong>Color:</strong> ${color}</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 3px solid #667eea; padding-top: 30px;">
+            <h3 style="color: #667eea; margin-bottom: 20px;">Desglose de Costos:</h3>
+            <div class="panel-details">
+                <p><strong>Costo Base (${windowType}):</strong> $${baseCost}</p>
+                <p><strong>Costo Color (${color}):</strong> $${colorCost}</p>
+                <p><strong>Costo Vidrio (${glassType}):</strong> $${glassCost}</p>
+                <p style="border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;"><strong>Subtotal:</strong> $${totalBeforeTax}</p>
+                <p><strong>+ 18%:</strong> $${(parseFloat(totalWithTax) - parseFloat(totalBeforeTax)).toFixed(2)}</p>
+                <p style="color: #667eea; font-weight: 700; font-size: 1.1em; border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;">Total con 18%: $${totalWithTax}</p>
+                
+                <p style="margin-top: 25px; font-size: 1.4em; color: #667eea; font-weight: 700; border-top: 3px solid #667eea; padding-top: 20px;">Precio de Venta (sin taxes): $${salePrice}</p>
+            </div>
+        </div>
+    `;
+    
+    vinylResultDetails.innerHTML = html;
+    navigateTo('vinylResult');
+}
+
+// Generar PDF para Shower Door
 function generatePDF() {
     const { projectName, glassThickness, glassType, numPanels, percentageIncrease, hwValue, laborCost, subtotalAllPanels, percentageAmount, hwWithPercentage, totalFinal, panelsDetails } = currentData;
     
@@ -304,14 +480,14 @@ function generatePDF() {
 ╚════════════════════════════════════════════════════════════════════╝
 
 INFORMACIÓN DEL PROYECTO:
-───────────────────────────────────────────────────────��──────────────
+────────────────────────────────────────────────────────────────────
 Proyecto:                 ${projectName}
 Tipo de Vidrio:           ${glassType}
 Grosor:                   ${glassThickness}"
 Cantidad de Paneles:      ${numPanels}
 
 DETALLES POR PANEL:
-──────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────
 `;
     
     panelsDetails.forEach(panel => {
@@ -325,26 +501,26 @@ Panel ${panel.number}: ${panel.length}" × ${panel.width}"
   Cortes (${panel.cortes}):            $${(panel.cortes * hardwarePrices.cortes).toFixed(2)}
   Hardware Total:          $${panel.hardwarePrice}
   Subtotal:                $${panel.subtotal}
-  + 13%:                   $${panel.with13Percent}
+  + 13%:                   $${panel.with13Percent.toFixed(2)}
 `;
     });
     
     content += `
-──────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────
 RESUMEN DE COSTOS:
-──────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────
 Subtotal (Vidrio + Hardware + 13%):  $${subtotalAllPanels}
 Aumento ${percentageIncrease}%:                        $${percentageAmount}
 Subtotal con Aumento:                $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}
 
-Hardware Base:                       $${hwValue}
+Hardware Base:                       $${hwValue.toFixed(2)}
 Hardware con ${percentageIncrease}%:                 $${hwWithPercentage}
 
-Mano de Obra (Labor):                $${laborCost}
+Mano de Obra (Labor):                $${laborCost.toFixed(2)}
 
-══════════════════════════════════════════════════════════════════════
+────────────────────────────────────────────────────────────────────
 TOTAL FINAL:                         $${totalFinal}
-══════════════════════════════════════════════════════════════════════
+────────────────────────────────────────────────────────────────────
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
@@ -359,6 +535,56 @@ Hora: ${new Date().toLocaleTimeString('es-ES')}
     const link = document.createElement('a');
     link.href = url;
     link.download = `cotizacion_${projectName.replace(/\s+/g, '_')}_${new Date().getTime()}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+}
+
+// Generar PDF para Window Vinyl
+function generateVinylPDF() {
+    const { width, height, glassType, windowType, color, baseCost, colorCost, glassCost, totalBeforeTax, totalWithTax, salePrice } = currentData;
+    
+    let content = `
+╔════════════════════════════════════════════════════════════════════╗
+║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                ║
+║                   COTIZACIÓN WINDOW VINYL                         ║
+╚════════════════════════════════════════════════════════════════════╝
+
+INFORMACIÓN DE LA VENTANA:
+────────────────────────────────────────────────────────────────────
+Ancho:                    ${width}"
+Alto:                     ${height}"
+Tipo de Vidrio:           ${glassType}
+Tipo de Ventana:          ${windowType}
+Color:                    ${color}
+
+DETALLE DE COSTOS:
+────────────────────────────────────────────────────────────────────
+Costo Base:               $${baseCost}
+Costo Color:              $${colorCost}
+Costo Vidrio:             $${glassCost}
+Subtotal:                 $${totalBeforeTax}
+Impuesto (18%):           $${(parseFloat(totalWithTax) - parseFloat(totalBeforeTax)).toFixed(2)}
+Total con 18%:            $${totalWithTax}
+
+────────────────────────────────────────────────────────────────────
+PRECIO DE VENTA (Sin taxes): $${salePrice}
+────────────────────────────────────────────────────────────────────
+
+Fecha: ${new Date().toLocaleDateString('es-ES')}
+Hora: ${new Date().toLocaleTimeString('es-ES')}
+
+╔════════════════════════════════════════════════════════════════════╗
+║  Esta cotización es válida. Para más información, contacte a MGM. ║
+╚════════════════════════════════════════════════════════════════════╝
+`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `cotizacion_window_vinyl_${new Date().getTime()}.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
