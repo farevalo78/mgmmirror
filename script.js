@@ -238,8 +238,8 @@ function calculateQuote() {
         // Subtotal panel + hardware
         let panelSubtotal = glassPrice + hardwarePrice;
         
-        // Aumentar 13% al panel
-        const panelWith13Percent = panelSubtotal * 1.13;
+        // Aumentar 13% al panel - REDONDEADO AL SUPERIOR
+        const panelWith13Percent = Math.ceil(panelSubtotal * 1.13 * 100) / 100;
         
         totalGlassPrice += glassPrice;
         totalHardwarePrice += hardwarePrice;
@@ -257,18 +257,18 @@ function calculateQuote() {
             cortes: cortes,
             hardwarePrice: hardwarePrice.toFixed(2),
             subtotal: panelSubtotal.toFixed(2),
-            with13Percent: Math.ceil(panelWith13Percent * 100) / 100
+            with13Percent: panelWith13Percent
         });
     }
     
     // Subtotal antes de % adicional
     const subtotalAllPanels = panelsDetails.reduce((sum, p) => sum + p.with13Percent, 0);
     
-    // Aplicar porcentaje adicional
+    // Aplicar porcentaje adicional - REDONDEADO AL SUPERIOR
     const percentageAmount = Math.ceil(subtotalAllPanels * (percentageIncrease / 100) * 100) / 100;
     const subtotalWithPercentage = subtotalAllPanels + percentageAmount;
     
-    // Hardware con porcentaje
+    // Hardware con porcentaje - REDONDEADO AL SUPERIOR
     const hwWithPercentage = Math.ceil((hwValue + (hwValue * (percentageIncrease / 100))) * 100) / 100;
     
     // Total final
@@ -384,7 +384,7 @@ function calculateWindowVinylQuote() {
     const colorCost = colorPrices[color];
     const glassCost = glassPrices[glassType];
     
-    // Calcular según tipo de ventana
+    // Calcular según tipo de ventana - REDONDEADO AL SUPERIOR
     if (windowType === 'Double Hang') {
         const sum = width + height;
         if (sum <= 102) {
@@ -413,7 +413,7 @@ function calculateWindowVinylQuote() {
     const totalWithTax = Math.ceil((totalBeforeTax * 1.18) * 100) / 100;
     
     // Precio de venta sin taxes (multiplicar por 2)
-    const salePrice = totalWithTax * 2;
+    const salePrice = Math.ceil(totalWithTax * 2 * 100) / 100;
     
     currentData = {
         type: 'windowVinyl',
@@ -422,10 +422,10 @@ function calculateWindowVinylQuote() {
         glassType: glassType,
         windowType: windowType,
         color: color,
-        baseCost: baseCost.toFixed(2),
+        baseCost: Math.ceil(baseCost * 100) / 100,
         colorCost: colorCost.toFixed(2),
-        glassCost: glassCost.toFixed(2),
-        totalBeforeTax: totalBeforeTax.toFixed(2),
+        glassCost: Math.ceil(glassCost * 100) / 100,
+        totalBeforeTax: Math.ceil(totalBeforeTax * 100) / 100,
         totalWithTax: totalWithTax.toFixed(2),
         salePrice: salePrice.toFixed(2)
     };
@@ -474,20 +474,20 @@ function generatePDF() {
     const { projectName, glassThickness, glassType, numPanels, percentageIncrease, hwValue, laborCost, subtotalAllPanels, percentageAmount, hwWithPercentage, totalFinal, panelsDetails } = currentData;
     
     let content = `
-╔════════════════════════════════════════════════════════════════════╗
-║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                ║
-║                    COTIZACIÓN DE SHOWER DOOR                      ║
-╚════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                        ║
+║                    COTIZACIÓN DE SHOWER DOOR                              ║
+╚════════════════════════════════════════════════════════════════════════════╝
 
 INFORMACIÓN DEL PROYECTO:
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 Proyecto:                 ${projectName}
 Tipo de Vidrio:           ${glassType}
 Grosor:                   ${glassThickness}"
 Cantidad de Paneles:      ${numPanels}
 
 DETALLES POR PANEL:
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 `;
     
     panelsDetails.forEach(panel => {
@@ -506,9 +506,9 @@ Panel ${panel.number}: ${panel.length}" × ${panel.width}"
     });
     
     content += `
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 RESUMEN DE COSTOS:
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 Subtotal (Vidrio + Hardware + 13%):  $${subtotalAllPanels}
 Aumento ${percentageIncrease}%:                        $${percentageAmount}
 Subtotal con Aumento:                $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}
@@ -518,16 +518,16 @@ Hardware con ${percentageIncrease}%:                 $${hwWithPercentage}
 
 Mano de Obra (Labor):                $${laborCost.toFixed(2)}
 
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 TOTAL FINAL:                         $${totalFinal}
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
 
-╔════════════════════════════════════════════════════════════════════╗
-║  Esta cotización es válida. Para más información, contacte a MGM. ║
-╚════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║  Esta cotización es válida. Para más información, contacte a MGM.         ║
+╚════════════════════════════════════════════════════════════════════════════╝
 `;
     
     const blob = new Blob([content], { type: 'text/plain' });
@@ -546,13 +546,13 @@ function generateVinylPDF() {
     const { width, height, glassType, windowType, color, baseCost, colorCost, glassCost, totalBeforeTax, totalWithTax, salePrice } = currentData;
     
     let content = `
-╔════════════════════════════════════════════════════════════════════╗
-║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                ║
-║                   COTIZACIÓN WINDOW VINYL                         ║
-╚════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                        ║
+║                   COTIZACIÓN WINDOW VINYL                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
 
 INFORMACIÓN DE LA VENTANA:
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 Ancho:                    ${width}"
 Alto:                     ${height}"
 Tipo de Vidrio:           ${glassType}
@@ -560,7 +560,7 @@ Tipo de Ventana:          ${windowType}
 Color:                    ${color}
 
 DETALLE DE COSTOS:
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 Costo Base:               $${baseCost}
 Costo Color:              $${colorCost}
 Costo Vidrio:             $${glassCost}
@@ -568,16 +568,16 @@ Subtotal:                 $${totalBeforeTax}
 Impuesto (18%):           $${(parseFloat(totalWithTax) - parseFloat(totalBeforeTax)).toFixed(2)}
 Total con 18%:            $${totalWithTax}
 
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 PRECIO DE VENTA (Sin taxes): $${salePrice}
-────────────────────────────────────────────────────────────────────
+═════════════════════════════════════════════════════════════════════════════
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
 
-╔════════════════════════════════════════════════════════════════════╗
-║  Esta cotización es válida. Para más información, contacte a MGM. ║
-╚════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════╗
+║  Esta cotización es válida. Para más información, contacte a MGM.         ║
+╚════════════════════════════════════════════════════════════════════════════╝
 `;
     
     const blob = new Blob([content], { type: 'text/plain' });
