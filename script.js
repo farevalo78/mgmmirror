@@ -332,13 +332,15 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
     });
     
     // Resumen de costos
+    const subtotalConAumento = parseFloat(subtotalAllPanels) + parseFloat(percentageAmount);
+    
     html += `
         <div style="margin-top: 30px; border-top: 3px solid #667eea; padding-top: 30px;">
             <h3 style="color: #667eea; margin-bottom: 20px;">Resumen de Costos:</h3>
             <div class="panel-details">
                 <p><strong>Subtotal Vidrio + Hardware + 13%:</strong> $${subtotalAllPanels.toFixed(2)}</p>
                 <p><strong>Aumento ${percentageIncrease}%:</strong> $${percentageAmount.toFixed(2)}</p>
-                <p style="border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;"><strong>Subtotal con Aumento:</strong> $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}</p>
+                <p style="border-top: 1px solid #e0e0e0; padding-top: 10px; margin-top: 10px;"><strong>Subtotal con Aumento:</strong> $${subtotalConAumento.toFixed(2)}</p>
                 
                 <p style="margin-top: 20px;"><strong>Hardware (HW): </strong> $${hwValue.toFixed(2)}</p>
                 <p><strong>Hardware con ${percentageIncrease}%:</strong> $${hwWithPercentage.toFixed(2)}</p>
@@ -509,13 +511,15 @@ Panel ${panel.number}: ${panel.length}" × ${panel.width}"
 `;
     });
     
+    const subtotalConAumento = (parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2);
+    
     content += `
 ════════════════════════════════════════════════════════════════════════════════════
 RESUMEN DE COSTOS:
 ════════════════════════════════════════════════════════════════════════════════════
 Subtotal (Vidrio + Hardware + 13%):  $${subtotalAllPanels}
 Aumento ${percentageIncrease}%:                        $${percentageAmount}
-Subtotal con Aumento:                $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}
+Subtotal con Aumento:                $${subtotalConAumento}
 
 Hardware Base:                       $${hwValue.toFixed(2)}
 Hardware con ${percentageIncrease}%:                 $${hwWithPercentage}
@@ -576,7 +580,7 @@ Total con 18%:            $${totalWithTax}
 
 ════════════════════════════════════════════════════════════════════════════════════
 PRECIO DE VENTA (Sin taxes): $${salePrice}
-════════════════════════════════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════════════════════════��════
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
