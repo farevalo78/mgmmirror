@@ -271,24 +271,26 @@ function calculateQuote() {
     // Hardware con porcentaje - REDONDEADO AL SUPERIOR
     const hwWithPercentage = Math.ceil((hwValue + (hwValue * (percentageIncrease / 100))) * 100) / 100;
     
-    // Total final
-    const totalFinal = subtotalWithPercentage + hwWithPercentage + laborCost;
+    // Total final con delivery de 50
+    const deliveryFee = 50;
+    const totalFinal = subtotalWithPercentage + hwWithPercentage + laborCost + deliveryFee;
     
     // Guardar para generación de PDF
     currentData.percentageIncrease = percentageIncrease;
     currentData.hwValue = hwValue;
     currentData.laborCost = laborCost;
+    currentData.deliveryFee = deliveryFee;
     currentData.panelsDetails = panelsDetails;
     currentData.subtotalAllPanels = subtotalAllPanels.toFixed(2);
     currentData.percentageAmount = percentageAmount.toFixed(2);
     currentData.hwWithPercentage = hwWithPercentage.toFixed(2);
     currentData.totalFinal = totalFinal.toFixed(2);
     
-    displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, totalFinal);
+    displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, deliveryFee, totalFinal);
 }
 
 // Mostrar resultados Shower Door
-function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, totalFinal) {
+function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwValue, hwWithPercentage, laborCost, deliveryFee, totalFinal) {
     const resultDetails = document.getElementById('resultDetails');
     const { projectName, percentageIncrease } = currentData;
     
@@ -342,6 +344,8 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
                 <p><strong>Hardware con ${percentageIncrease}%:</strong> $${hwWithPercentage.toFixed(2)}</p>
                 
                 <p style="margin-top: 20px; border-top: 2px solid #667eea; padding-top: 20px;"><strong>Mano de Obra (Labor):</strong> $${laborCost.toFixed(2)}</p>
+                
+                <p style="margin-top: 20px;"><strong>Delivery:</strong> $${deliveryFee.toFixed(2)}</p>
                 
                 <p style="margin-top: 30px; font-size: 1.5em; color: #667eea; font-weight: 700; border-top: 3px solid #667eea; padding-top: 20px;">TOTAL FINAL: $${totalFinal.toFixed(2)}</p>
             </div>
@@ -471,23 +475,23 @@ function displayVinylResults() {
 
 // Generar PDF para Shower Door
 function generatePDF() {
-    const { projectName, glassThickness, glassType, numPanels, percentageIncrease, hwValue, laborCost, subtotalAllPanels, percentageAmount, hwWithPercentage, totalFinal, panelsDetails } = currentData;
+    const { projectName, glassThickness, glassType, numPanels, percentageIncrease, hwValue, laborCost, deliveryFee, subtotalAllPanels, percentageAmount, hwWithPercentage, totalFinal, panelsDetails } = currentData;
     
     let content = `
-╔════════════════════════════════════════════════════════════════════════════╗
-║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                        ║
-║                    COTIZACIÓN DE SHOWER DOOR                              ║
-╚════════════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════════╗
+║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                             ║
+║                    COTIZACIÓN DE SHOWER DOOR                                   ║
+╚════════════════════════════════════════════════════════════════════════════════╝
 
 INFORMACIÓN DEL PROYECTO:
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 Proyecto:                 ${projectName}
 Tipo de Vidrio:           ${glassType}
 Grosor:                   ${glassThickness}"
 Cantidad de Paneles:      ${numPanels}
 
 DETALLES POR PANEL:
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 `;
     
     panelsDetails.forEach(panel => {
@@ -506,9 +510,9 @@ Panel ${panel.number}: ${panel.length}" × ${panel.width}"
     });
     
     content += `
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 RESUMEN DE COSTOS:
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 Subtotal (Vidrio + Hardware + 13%):  $${subtotalAllPanels}
 Aumento ${percentageIncrease}%:                        $${percentageAmount}
 Subtotal con Aumento:                $${(parseFloat(subtotalAllPanels) + parseFloat(percentageAmount)).toFixed(2)}
@@ -518,16 +522,18 @@ Hardware con ${percentageIncrease}%:                 $${hwWithPercentage}
 
 Mano de Obra (Labor):                $${laborCost.toFixed(2)}
 
-═════════════════════════════════════════════════════════════════════════════
+Delivery:                            $${deliveryFee.toFixed(2)}
+
+════════════════════════════════════════════════════════════════════════════════════
 TOTAL FINAL:                         $${totalFinal}
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
 
-╔════════════════════════════════════════════════════════════════════════════╗
-║  Esta cotización es válida. Para más información, contacte a MGM.         ║
-╚════════════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════════╗
+║  Esta cotización es válida. Para más información, contacte a MGM.              ║
+╚════════════════════════════════════════════════════════════════════════════════╝
 `;
     
     const blob = new Blob([content], { type: 'text/plain' });
@@ -546,13 +552,13 @@ function generateVinylPDF() {
     const { width, height, glassType, windowType, color, baseCost, colorCost, glassCost, totalBeforeTax, totalWithTax, salePrice } = currentData;
     
     let content = `
-╔════════════════════════════════════════════════════════════════════════════╗
-║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                        ║
-║                   COTIZACIÓN WINDOW VINYL                                 ║
-╚════════════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════════╗
+║          COTIZADOR DE VIDRIO TEMPERED - MGM MIRROR                             ║
+║                   COTIZACIÓN WINDOW VINYL                                      ║
+╚════════════════════════════════════════════════════════════════════════════════╝
 
 INFORMACIÓN DE LA VENTANA:
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 Ancho:                    ${width}"
 Alto:                     ${height}"
 Tipo de Vidrio:           ${glassType}
@@ -560,7 +566,7 @@ Tipo de Ventana:          ${windowType}
 Color:                    ${color}
 
 DETALLE DE COSTOS:
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 Costo Base:               $${baseCost}
 Costo Color:              $${colorCost}
 Costo Vidrio:             $${glassCost}
@@ -568,16 +574,16 @@ Subtotal:                 $${totalBeforeTax}
 Impuesto (18%):           $${(parseFloat(totalWithTax) - parseFloat(totalBeforeTax)).toFixed(2)}
 Total con 18%:            $${totalWithTax}
 
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 PRECIO DE VENTA (Sin taxes): $${salePrice}
-═════════════════════════════════════════════════════════════════════════════
+════════════════════════════════════════════════════════════════════════════════════
 
 Fecha: ${new Date().toLocaleDateString('es-ES')}
 Hora: ${new Date().toLocaleTimeString('es-ES')}
 
-╔════════════════════════════════════════════════════════════════════════════╗
-║  Esta cotización es válida. Para más información, contacte a MGM.         ║
-╚════════════════════════════════════════════════════════════════════════════╝
+╔════════════════════════════════════════════════════════════════════════════════╗
+║  Esta cotización es válida. Para más información, contacte a MGM.              ║
+╚════════════════════════════════════════════════════════════════════════════════╝
 `;
     
     const blob = new Blob([content], { type: 'text/plain' });
