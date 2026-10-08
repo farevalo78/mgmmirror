@@ -128,11 +128,11 @@ function startPanelMeasurements() {
             <h3>Panel ${i}</h3>
             <div class="panel-form-group">
                 <div class="form-group">
-                    <label for="length${i}">Largo (pulgadas)</label>
+                    <label for="length${i}">Height (pulgadas)</label>
                     <input type="number" id="length${i}" placeholder="Ej: 36" min="1" step="0.1" required>
                 </div>
                 <div class="form-group">
-                    <label for="width${i}">Ancho (pulgadas)</label>
+                    <label for="width${i}">Width (pulgadas)</label>
                     <input type="number" id="width${i}" placeholder="Ej: 76" min="1" step="0.1" required>
                 </div>
             </div>
@@ -148,7 +148,7 @@ function startPanelMeasurements() {
                     <input type="number" id="brackets${i}" placeholder="0" min="0" value="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="orificios${i}">Orificios (x$${hardwarePrices.orificios})</label>
+                    <label for="orificios${i}">Holes (x$${hardwarePrices.orificios})</label>
                     <input type="number" id="orificios${i}" placeholder="0" min="0" value="0" required>
                 </div>
                 <div class="form-group">
@@ -156,7 +156,7 @@ function startPanelMeasurements() {
                     <input type="number" id="hinges${i}" placeholder="0" min="0" value="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="cortes${i}">Cortes (x$${hardwarePrices.cortes})</label>
+                    <label for="cortes${i}">Shapes (x$${hardwarePrices.cortes})</label>
                     <input type="number" id="cortes${i}" placeholder="0" min="0" value="0" required>
                 </div>
             </div>
