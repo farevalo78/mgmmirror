@@ -128,11 +128,11 @@ function startPanelMeasurements() {
             <h3>Panel ${i}</h3>
             <div class="panel-form-group">
                 <div class="form-group">
-                    <label for="length${i}">Height (pulgadas)</label>
+                    <label for="length${i}">Height (inches)</label>
                     <input type="number" id="length${i}" placeholder="Ej: 36" min="1" step="0.1" required>
                 </div>
                 <div class="form-group">
-                    <label for="width${i}">Width (pulgadas)</label>
+                    <label for="width${i}">Width (inches)</label>
                     <input type="number" id="width${i}" placeholder="Ej: 76" min="1" step="0.1" required>
                 </div>
             </div>
