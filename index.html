@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizador de Vidrio Tempered - MGM Mirror</title>
+    <title>Tempered Glass Price Calculator - MGM Mirror</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,18 +32,17 @@
         <div id="showerDoorPage" class="page">
             <div class="header">
                 <button class="back-btn" onclick="navigateTo('main')">← Atrás</button>
-                <h1>Cotizar Shower Door</h1>
-                <p>Ingrese la información para obtener su cotización</p>
-            </div>
+                <h1>Quote Shower Door</h1>
+                </div>
             
             <form class="form-container">
                 <div class="form-group">
-                    <label for="projectName">Nombre del Proyecto</label>
+                    <label for="projectName">Project Name</label>
                     <input type="text" id="projectName" placeholder="Ej: Baño Principal" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="numPanels">¿Cuántos paneles necesita?</label>
+                    <label for="numPanels">¿How many panels ?</label>
                     <select id="numPanels" onchange="updateGlassTypes()" required>
                         <option value="">Seleccione cantidad</option>
                         <option value="1">1 Panel</option>
@@ -56,7 +55,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="glassThickness">¿Qué grosor de vidrio?</label>
+                    <label for="glassThickness">Glass Thickness</label>
                     <select id="glassThickness" onchange="updateGlassTypes()" required>
                         <option value="">Seleccione grosor</option>
                         <option value="1/4">1/4"</option>
@@ -66,9 +65,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="glassType">¿Qué tipo de vidrio?</label>
+                    <label for="glassType">Type of glass</label>
                     <select id="glassType" required>
-                        <option value="">Seleccione tipo</option>
+                        <option value="">Select type</option>
                     </select>
                 </div>
 
@@ -80,18 +79,18 @@
         <div id="windowVinylPage" class="page">
             <div class="header">
                 <button class="back-btn" onclick="navigateTo('main')">← Atrás</button>
-                <h1>Cotizar Window Vinyl</h1>
+                <h1>Quote Vinyl Window</h1>
                 <p>Ingrese las especificaciones de su ventana</p>
             </div>
             
             <form class="form-container">
                 <div class="form-group">
-                    <label for="vinylWidth">Ancho (pulgadas)</label>
+                    <label for="vinylWidth">width (pulgadas)</label>
                     <input type="number" id="vinylWidth" placeholder="Ej: 36" min="1" step="0.1" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="vinylHeight">Alto (pulgadas)</label>
+                    <label for="vinylHeight">height (pulgadas)</label>
                     <input type="number" id="vinylHeight" placeholder="Ej: 48" min="1" step="0.1" required>
                 </div>
 
@@ -134,8 +133,8 @@
         <div id="panelMeasurementsPage" class="page">
             <div class="header">
                 <button class="back-btn" onclick="navigateTo('showerDoor')">← Atrás</button>
-                <h1>Medidas y Accesorios de Paneles</h1>
-                <p>Ingrese las medidas en pulgadas y cantidad de accesorios</p>
+                <h1>Panel Dimensions and Accessories</h1>
+                <p>Enter the measurements in inches and the quantity of fittings.</p>
             </div>
             
             <div class="panels-container">
@@ -150,31 +149,31 @@
         <!-- Página de Costos Adicionales -->
         <div id="additionalCostsPage" class="page">
             <div class="header">
-                <button class="back-btn" onclick="navigateTo('panelMeasurements')">← Atrás</button>
-                <h1>Costos Adicionales</h1>
-                <p>Ingrese porcentaje de aumento y hardware</p>
+                <button class="back-btn" onclick="navigateTo('panelMeasurements')">← Back</button>
+                <h1>Additional Costs</h1>
+                <p>Enter the percentage increase and hardware.</p>
             </div>
             
             <form class="form-container">
                 <div class="form-group">
-                    <label for="percentageIncrease">¿Qué % aumentar al precio total?</label>
+                    <label for="percentageIncrease">What percentage should be added to the total price?</label>
                     <input type="number" id="percentageIncrease" placeholder="Ej: 10" min="0" step="0.1" value="0" required>
-                    <small>Porcentaje a aumentar al vidrio y accesorios</small>
+                    <small>Percentage increase for glass and accessories</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="hwValue">Valor del Hardware (HW)</label>
+                    <label for="hwValue">Hardware Cost (HW)</label>
                     <input type="number" id="hwValue" placeholder="Ej: 500" min="0" step="0.01" value="0" required>
-                    <small>Se aplicará el mismo porcentaje de aumento</small>
+                    <small>The same percentage increase will be applied.</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="laborCost">Costo de Labor (Mano de Obra)</label>
+                    <label for="laborCost">Labor Cost</label>
                     <input type="number" id="laborCost" placeholder="Ej: 300" min="0" step="0.01" value="0" required>
-                    <small>Costo directo sin aumento de porcentaje</small>
+                    <small>Direct cost without percentage increase</small>
                 </div>
 
-                <button type="button" class="btn-primary" onclick="calculateQuote()">Calcular Cotización Final →</button>
+                <button type="button" class="btn-primary" onclick="calculateQuote()">Calculate Final Quote →</button>
             </form>
         </div>
 
@@ -182,15 +181,15 @@
         <div id="resultPage" class="page">
             <div class="header">
                 <button class="back-btn" onclick="navigateTo('main')">← Inicio</button>
-                <h1>Su Cotización Completa</h1>
-                <p>Detalles completos de su pedido</p>
+                <h1>Your Complete Quote</h1>
+                <p>Full details of your order</p>
             </div>
             
             <div class="result-container">
                 <div id="resultDetails"></div>
                 <div class="button-group">
-                    <button class="btn-primary" onclick="generatePDF()">📄 Descargar PDF</button>
-                    <button class="btn-secondary" onclick="navigateTo('main')">← Hacer Otra Cotización</button>
+                    <button class="btn-primary" onclick="generatePDF()">📄 Download PDF</button>
+                    <button class="btn-secondary" onclick="navigateTo('main')">← Get Another Quote</button>
                 </div>
             </div>
         </div>
