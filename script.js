@@ -20,18 +20,18 @@ const priceDatabase = {
         "Acid etch": 9.8
     },
     "3/8": {
-        "Clear": 8.25,
-        "Low iron": 15,
-        "Acid etch": 19.1,
+        "Clear": 9.64,
+        "Low iron": 17,
+        "Acid etch": 23.18,
         "Acid etch low iron": 24.25,
         "Shower guard": 17.5,
         "Low iron shower guard": 21
     },
     "1/2": {
-        "Clear": 10.3,
-        "Acid etch": 22.85,
+        "Clear": 10.9,
+        "Acid etch": 27.85,
         "Acid etch low iron": 28.5,
-        "Low iron": 17.3,
+        "Low iron": 19.4,
         "Shower guard": 20.75
     }
 };
