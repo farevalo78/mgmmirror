@@ -507,7 +507,7 @@ Panel ${panel.number}: ${panel.length}" × ${panel.width}"
   Cortes (${panel.cortes}):            $${(panel.cortes * hardwarePrices.cortes).toFixed(2)}
   Hardware Total:          $${panel.hardwarePrice}
   Subtotal:                $${panel.subtotal}
-  + 13%:                   $${panel.with13Percent.toFixed(2)}
+  + 15%:                   $${panel.with13Percent.toFixed(2)}
 `;
     });
     
