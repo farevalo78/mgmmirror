@@ -325,7 +325,7 @@ function displayResults(panelsDetails, subtotalAllPanels, percentageAmount, hwVa
                     </div>
                     <p style="margin-top: 10px;"><strong>Hardware Total:</strong> $${panel.hardwarePrice}</p>
                     <p style="margin-top: 10px; border-top: 1px solid #e0e0e0; padding-top: 10px;"><strong>Subtotal:</strong> $${panel.subtotal}</p>
-                    <p style="color: #667eea; font-weight: 700; font-size: 1.05em;"><strong>+ 13%:</strong> $${panel.with13Percent.toFixed(2)}</p>
+                    <p style="color: #667eea; font-weight: 700; font-size: 1.05em;"><strong>+ 15%:</strong> $${panel.with13Percent.toFixed(2)}</p>
                 </div>
             </div>
         `;
