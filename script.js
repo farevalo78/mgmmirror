@@ -238,8 +238,8 @@ function calculateQuote() {
         // Subtotal panel + hardware
         let panelSubtotal = glassPrice + hardwarePrice;
         
-        // Aumentar 13% al panel - REDONDEADO AL SUPERIOR
-        const panelWith13Percent = Math.ceil(panelSubtotal * 1.13 * 100) / 100;
+        // Aumentar 15% al panel - REDONDEADO AL SUPERIOR
+        const panelWith13Percent = Math.ceil(panelSubtotal * 1.15 * 100) / 100;
         
         totalGlassPrice += glassPrice;
         totalHardwarePrice += hardwarePrice;
